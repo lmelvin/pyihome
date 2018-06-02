@@ -46,6 +46,7 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+/pyihome/test.py
 
 # Translations
 *.mo
@@ -80,6 +81,11 @@ celerybeat-schedule
 
 # SageMath parsed files
 *.sage.py
+
+# Visual Studio
+/.vs
+*.user
+pyihome/.vs
 
 # Environments
 .env
