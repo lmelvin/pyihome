@@ -6,7 +6,7 @@ class ApiUrls:
     def __init__(self):
         self.login = "https://www.ihomeaudio.com/api/v3/login/"
         self.api_base = "https://api.evrythng.com/thngs"
-        self.devices = self.api_base + "?sortOrder=ASCENDING"
+        self.devices = "{}?sortOrder=ASCENDING".format(self.api_base)
 
 class ApiHeaders:
     def __init__(self):
