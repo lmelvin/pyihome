@@ -2,4 +2,12 @@
 
 Python library to interface with iHome API.
 
-*Warning: This project is not yet fully functional*
+Currently this library supports the following:
+
+All Devices
+ - get devices
+
+Switch
+ - turn on
+ - turn off
+ - get status
