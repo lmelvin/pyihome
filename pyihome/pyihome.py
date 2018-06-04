@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 # https://developers.evrythng.com/reference
 class ApiUrls:
     def __init__(self):
@@ -8,14 +9,17 @@ class ApiUrls:
         self.api_base = "https://api.evrythng.com/thngs"
         self.devices = "{}?sortOrder=ASCENDING".format(self.api_base)
 
+
 class ApiHeaders:
     def __init__(self):
         self._api_key = ""
 
+
 API_URLS = ApiUrls()
 API_HEADERS = ApiHeaders()
 
-class PyiHomeApi:
+
+class PyiHome:
     def __init__(self, email, password):
         self._email = email
         self._password = password
@@ -25,7 +29,7 @@ class PyiHomeApi:
         headers = {"Authorization": API_HEADERS._api_key}
         response = requests.request(type, url, data=formPayload, json=jsonPayload, headers=headers)
         return response
-    
+
     def get_devices(self):
         response = self.api_call(API_URLS.devices, "GET", None)
         return response.json()
@@ -38,19 +42,19 @@ class PyiHomeApi:
     class Switch:
         def get_state(self, device_id):
             url = "{}/{}".format(API_URLS.api_base, device_id)
-            result = PyiHomeApi.api_call(self, url, "GET", None, None)
+            result = PyiHome.api_call(self, url, "GET", None, None)
             state = int(result.json()["properties"]["currentpowerstate1"])
             return state
 
         def turn_on(self, device_id):
             self._set_state(device_id, 1)
-        
+
         def turn_off(self, device_id):
             self._set_state(device_id, 0)
-        
+
         def _set_state(self, device_id, state):
             if state == None:
                 state = 0
             url = "{}/{}/properties/targetpowerstate1".format(API_URLS.api_base, device_id)
-            payload = [{"value":str(state)}]
-            PyiHomeApi.api_call(self, url, "PUT", None, payload)
+            payload = [{"value": str(state)}]
+            PyiHome.api_call(self, url, "PUT", None, payload)

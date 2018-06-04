@@ -1,1 +1,1 @@
-import pyihomeapi
+from .pyihome import PyiHome
