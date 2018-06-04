@@ -1,6 +1,4 @@
 import requests
-import json
-
 
 # https://developers.evrythng.com/reference
 class ApiUrls:
@@ -32,7 +30,13 @@ class PyiHome:
 
     def get_devices(self):
         response = self.api_call(API_URLS.devices, "GET", None)
-        return response.json()
+        devices = []
+        for device in response.json():
+            props = device["properties"]
+            if "numoutlets" in props:
+                if int(props["numoutlets"]) == 1:
+                    devices.append(device)
+        return devices
 
     def login(self):
         payload = {"password": self._password, "email": self._email}
