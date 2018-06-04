@@ -1,11 +1,11 @@
 # pyihome
 
-Python library to interface with iHome API.
+Python library to interface with the iHome API.
 
 Currently this library supports the following:
 
 All Devices
- - get devices
+ - get devices associated with the account which are swtiches with only one outlet
 
 Switch
  - turn on
