@@ -57,7 +57,7 @@ class PyiHome:
             self._set_state(device_id, 0)
 
         def _set_state(self, device_id, state):
-            if state == None:
+            if state is None:
                 state = 0
             url = "{}/{}/properties/targetpowerstate1".format(API_URLS.api_base, device_id)
             payload = [{"value": str(state)}]
