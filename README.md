@@ -19,24 +19,24 @@ How to use
 ```python
 from pyihome import PyiHome
 
-#init api
+# init api
 api = PyiHome("username", "password")
 
-#get devices
+# get devices
 devices = api.get_devices()
 
-#get device id of the first item
+# get device id of the first item
 device_id = devices[0]["id"]
 
-#get switch specific api
+# get switch specific api
 switch = api.Switch()
 
-#turn on the switch
+# turn on the switch
 switch.turn_on(device_id)
 
-#turn off the switch
+# turn off the switch
 switch.turn_off(device_id)
 
-#get state
+# get state
 print("State: {}".format(switch.get_state(device_id)))
 ```
