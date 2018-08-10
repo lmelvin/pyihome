@@ -4,8 +4,6 @@ Python library to interface with the iHome API.
 
 This library interfaces with the [EVRYTHING API](https://developers.evrythng.com/reference)
 
-Currently this library supports the following:
-
 How to use
 
 ```python
