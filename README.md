@@ -22,21 +22,33 @@ from pyihome import PyiHome
 # init api
 api = PyiHome("username", "password")
 
-# get devices
-devices = api.get_devices()
+# get ALL devices
+devices = api.devices
 
-# get device id of the first item
-device_id = devices[0]["id"]
+# get ALL switches
+switches = api.switches
 
-# get switch specific api
-switch = api.Switch()
+# work with a single switch
+switch = switches[0]
 
 # turn on the switch
-switch.turn_on(device_id)
+switch.turn_on()
 
 # turn off the switch
-switch.turn_off(device_id)
-
-# get state
-print("State: {}".format(switch.get_state(device_id)))
+switch.turn_off()
 ```
+
+#### Switch
+
+**Properties**
+| Property      | Type          |
+| ------------- |:------------- |
+| name          | str           |
+| id            | str           |
+
+**Methods**
+| Method        | Params        | Return Type | Description                                             |
+| ------------- | ------------- | ----------- | ------------------------------------------------------- |
+| turn_on()     |               | None        | Turns the switch on                                     |
+| turn_off()    |               | None        | Turns the switch off                                    |
+| get_state()   |               | int         | Gets the current state of the switch. 1 is on, 0 is off |

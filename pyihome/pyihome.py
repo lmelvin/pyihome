@@ -1,6 +1,8 @@
+# https://developers.evrythng.com/reference
+
 import requests
 
-# https://developers.evrythng.com/reference
+
 class ApiUrls:
     def __init__(self):
         self.login = "https://www.ihomeaudio.com/api/v3/login/"
@@ -8,57 +10,83 @@ class ApiUrls:
         self.devices = "{}?sortOrder=ASCENDING".format(self.api_base)
 
 
-class ApiHeaders:
-    def __init__(self):
-        self._api_key = ""
-
-
 API_URLS = ApiUrls()
-API_HEADERS = ApiHeaders()
 
 
 class PyiHome:
     def __init__(self, email, password):
         self._email = email
         self._password = password
-        self.login()
+        self._api_key = ""
+        self._devices = []
+        self._switches = []
+        self._login()
+        self._get_devices()
 
-    def api_call(self, url, type, formPayload, jsonPayload=None):
-        headers = {"Authorization": API_HEADERS._api_key}
-        response = requests.request(type, url, data=formPayload, json=jsonPayload, headers=headers)
+    @property
+    def devices(self):
+        return self._devices
+
+    @property
+    def switches(self):
+        return self._switches
+
+    def api_call(self, url, request_type, form_payload, json_payload=None):
+        headers = {"Authorization": self._api_key}
+        response = requests.request(
+            request_type,
+            url,
+            data=form_payload,
+            json=json_payload,
+            headers=headers)
         return response
 
-    def get_devices(self):
+    def _get_devices(self):
         response = self.api_call(API_URLS.devices, "GET", None)
-        devices = []
-        for device in response.json():
+        self._devices = response.json()
+        for device in self._devices:
             props = device["properties"]
             if "numoutlets" in props:
                 if int(props["numoutlets"]) == 1:
-                    devices.append(device)
-        return devices
+                    self._switches.append(Switch(device, self))
 
-    def login(self):
+    def _login(self):
         payload = {"password": self._password, "email": self._email}
         response = self.api_call(API_URLS.login, "POST", payload)
-        API_HEADERS._api_key = response.json()["everythng_api_key"]
+        self._api_key = response.json()["everythng_api_key"]
 
-    class Switch:
-        def get_state(self, device_id):
-            url = "{}/{}".format(API_URLS.api_base, device_id)
-            result = PyiHome.api_call(self, url, "GET", None, None)
-            state = int(result.json()["properties"]["currentpowerstate1"])
-            return state
 
-        def turn_on(self, device_id):
-            self._set_state(device_id, 1)
+class Switch:
+    def __init__(self, switch_data, api: PyiHome):
+        self.__api = api
+        self.__data = switch_data
+        self.__id: int = str(switch_data["id"])
+        self.__name: str = str(switch_data["name"])
+        self.__product: str = str(switch_data["product"])
 
-        def turn_off(self, device_id):
-            self._set_state(device_id, 0)
+    @property
+    def name(self):
+        return self.__name
 
-        def _set_state(self, device_id, state):
-            if state is None:
-                state = 0
-            url = "{}/{}/properties/targetpowerstate1".format(API_URLS.api_base, device_id)
-            payload = [{"value": str(state)}]
-            PyiHome.api_call(self, url, "PUT", None, payload)
+    @property
+    def id(self):
+        return self.__id
+
+    def turn_on(self):
+        self.__set_state(1)
+
+    def turn_off(self):
+        self.__set_state(0)
+
+    def get_state(self):
+        url = "{}/{}".format(API_URLS.api_base, self.id)
+        result = self.__api.api_call(url, "GET", None, None)
+        state = int(result.json()["properties"]["currentpowerstate1"])
+        return state
+
+    def __set_state(self, state: int):
+        if state is None:
+            state = 0
+        url = "{}/{}/properties/targetpowerstate1".format(API_URLS.api_base, self.id)
+        payload = [{"value": str(state)}]
+        self.__api.api_call(url, "PUT", None, payload)
