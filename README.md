@@ -6,14 +6,6 @@ This library interfaces with the [EVRYTHING API](https://developers.evrythng.com
 
 Currently this library supports the following:
 
-All Devices
- - get devices associated with the account which are swtiches with only one outlet
-
-Switch
- - turn_on(*device_id*)
- - turn_off(*device_id*)
- - get_state(*device_id*)
-
 How to use
 
 ```python
@@ -41,12 +33,14 @@ switch.turn_off()
 #### Switch
 
 **Properties**
+
 | Property      | Type          |
 | ------------- |:------------- |
 | name          | str           |
 | id            | str           |
 
 **Methods**
+
 | Method        | Params        | Return Type | Description                                             |
 | ------------- | ------------- | ----------- | ------------------------------------------------------- |
 | turn_on()     |               | None        | Turns the switch on                                     |
