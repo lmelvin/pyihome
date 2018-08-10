@@ -30,7 +30,7 @@ switch.turn_on()
 switch.turn_off()
 ```
 
-#### Switch
+### Switch
 
 **Properties**
 
