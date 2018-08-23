@@ -73,10 +73,10 @@ class Switch:
         return self.__id
 
     def turn_on(self):
-        self.__set_state(1)
+        self._set_state(1)
 
     def turn_off(self):
-        self.__set_state(0)
+        self._set_state(0)
 
     def get_state(self):
         url = "{}/{}".format(API_URLS.api_base, self.id)
@@ -84,7 +84,7 @@ class Switch:
         state = int(result.json()["properties"]["currentpowerstate1"])
         return state
 
-    def __set_state(self, state: int):
+    def _set_state(self, state: int):
         if state is None:
             state = 0
         url = "{}/{}/properties/targetpowerstate1".format(API_URLS.api_base, self.id)
