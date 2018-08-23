@@ -13,6 +13,7 @@ from pyihome import PyiHome
 api = PyiHome("username", "password")
 
 # get ALL devices
+# note this is a json object
 devices = api.devices
 
 # get ALL switches
