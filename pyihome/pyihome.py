@@ -44,6 +44,9 @@ class PyiHome:
     def _get_devices(self):
         response = self.api_call(API_URLS.devices, "GET", None)
         self._devices = response.json()
+        self._serialize_switches()
+
+    def _serialize_switches(self):
         for device in self._devices:
             props = device["properties"]
             if "numoutlets" in props:
